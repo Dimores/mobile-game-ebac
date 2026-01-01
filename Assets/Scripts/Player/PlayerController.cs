@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     public float speed = 1f;
 
     public string enemyTag = "Enemy";
+    public string endLineTag = "EndLine";
+
+    public GameObject endScreen;
     #endregion
 
     #region PRIVATES
@@ -21,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        _canRun = true;
     }
 
     void Update()
@@ -36,11 +38,30 @@ public class PlayerController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
     }
 
+    public void StartGame()
+    {
+        _canRun = true;
+    }
+
+    private void EndGame()
+    {
+        _canRun = false;
+        endScreen.SetActive(true);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.transform.tag == enemyTag)
         {
-            _canRun = false;
+            EndGame();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.transform.tag == endLineTag)
+        {
+            EndGame();
         }
     }
 }
