@@ -25,23 +25,30 @@ public class PlayerController : Singleton<PlayerController>
 
     [Header("Coin Setup")]
     public GameObject coinCollector;
+
+    [Header("Animation")]
+    public AnimatorManager animatorManager;
+
+    [Header("VFX")]
+    public ParticleSystem heightVfx;
+    public int rateOverDistance = 6;
     #endregion
 
     #region PRIVATES
     private bool _canRun;
     private Vector3 _pos;
-
     private Vector3 _startPosition;
-
     private float _currentSpeed;
-
     private bool _invencible = false;
+    private float _baseSpeedToAnimation = 7;
     #endregion
 
     void Start()
     {
         _startPosition = transform.position;
         ResetSpeed();
+
+        ChangeEmission(0);
     }
 
     void Update()
@@ -59,20 +66,31 @@ public class PlayerController : Singleton<PlayerController>
     public void StartGame()
     {
         _canRun = true;
+        animatorManager.Play(AnimatorManager.AnimatonType.RUN, _currentSpeed / _baseSpeedToAnimation);
     }
 
-    private void EndGame()
+    private void EndGame(AnimatorManager.AnimatonType animatonType = AnimatorManager.AnimatonType.IDLE)
     {
         _canRun = false;
         endScreen.SetActive(true);
+        animatorManager.Play(animatonType);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == enemyTag)
         {
-            if (!_invencible) EndGame();
+            if (!_invencible) 
+            {
+                MoveBack(collision.transform);
+                EndGame(AnimatorManager.AnimatonType.DEAD); 
+            }
         }
+    }
+
+    private void MoveBack(Transform t)
+    {
+        t.DOMoveZ(1f, .3f).SetRelative();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -108,10 +126,20 @@ public class PlayerController : Singleton<PlayerController>
         //p.y = _startPosition.y + amount;
         //transform.position = p;
 
+        ChangeEmission(rateOverDistance);
+
         transform.DOMoveY(_startPosition.y + amount,
-            animationDuration).SetEase(ease);//.OnComplete(ResetHeight);
+            animationDuration).SetEase(ease);
+
+        animatorManager.Play(AnimatorManager.AnimatonType.FLY);
 
         Invoke(nameof(ResetHeight), duration);
+    }
+
+    private void ReturnToRun()
+    {
+        animatorManager.Play(AnimatorManager.AnimatonType.RUN, _currentSpeed / _baseSpeedToAnimation);
+        ChangeEmission(0);
     }
 
     public void ResetHeight()
@@ -120,12 +148,20 @@ public class PlayerController : Singleton<PlayerController>
         //p.y = _startPosition.y;
         //transform.position = p;
 
-        transform.DOMoveY(_startPosition.y, .1f);
+        transform.DOMoveY(_startPosition.y, .1f).OnComplete(ReturnToRun);
     }
 
     public void ChangeCoinCollectorSize(float amount)
     {
         coinCollector.transform.localScale = Vector3.one * amount;
+    }
+    #endregion
+
+    #region VFX
+    private void ChangeEmission(int value = 0)
+    {
+        var emissionModule = heightVfx.emission;
+        emissionModule.rateOverDistance = new ParticleSystem.MinMaxCurve(value);
     }
     #endregion
 }

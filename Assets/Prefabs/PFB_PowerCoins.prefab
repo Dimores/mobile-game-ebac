@@ -154,4 +154,4 @@ MonoBehaviour:
   compareTag: Player
   audioSource: {fileID: 0}
   duration: 3
-  sizeAmount: 7
+  sizeAmount: 10
