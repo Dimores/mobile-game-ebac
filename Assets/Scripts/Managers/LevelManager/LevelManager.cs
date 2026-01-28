@@ -13,18 +13,18 @@ public class LevelManager : MonoBehaviour
     private int _index;
     private GameObject _currentLevel;
 
-    private List<LevelPieceBase> _spawnedPieces = new List<LevelPieceBase>();
+    private List<LevelPieceBase> _spawnedPieces;
     private LevelPieceBasedSetup _currentLevelPieceSetup;
 
     private void Awake()
     {
-        //SpawnNextLevel();
-        CreateLevelPieces();
+        _spawnedPieces = new List<LevelPieceBase>();
     }
 
     private void Start()
     {
         ResetLevel();
+        CreateLevelPieces();
     }
 
     private void SpawnNextLevel()
