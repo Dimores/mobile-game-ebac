@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using DG.Tweening;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -9,6 +11,11 @@ public class LevelManager : MonoBehaviour
 
     public List<GameObject> levels;
     public List<LevelPieceBasedSetup> levelPieceBasedSetups;
+
+    [Header("Animation")]
+    public float scaleDuration = .2f;
+    public float scaleTimeBeetweenPieces = .1f;
+    public Ease ease = Ease.OutBack;
 
     private int _index;
     private GameObject _currentLevel;
@@ -53,6 +60,26 @@ public class LevelManager : MonoBehaviour
     private void ResetLevel()
     {
         _index = 0;
+    }
+
+    IEnumerator ScalePiecesByTime()
+    {
+        foreach (var piece in _spawnedPieces)
+        {
+            piece.transform.localScale = Vector3.zero;
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        for (int i = 0; i < _spawnedPieces.Count; i++)
+        {
+            if (_spawnedPieces[i] == null) continue;
+
+            _spawnedPieces[i].transform.DOScale(1, scaleDuration).SetEase(ease)
+                .SetLink(_spawnedPieces[i].gameObject);
+
+            yield return new WaitForSeconds(scaleTimeBeetweenPieces);
+        }
     }
 
     private void CreateLevelPiece(List<LevelPieceBase> levelList)
@@ -115,6 +142,8 @@ public class LevelManager : MonoBehaviour
         }
 
         ColorManager.Instance.ChangeColorByType(_currentLevelPieceSetup.artType);
+
+        StartCoroutine(ScalePiecesByTime());
     }
 
     private void Update()

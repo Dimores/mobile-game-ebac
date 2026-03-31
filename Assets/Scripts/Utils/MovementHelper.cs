@@ -25,7 +25,7 @@ public class MovementHelper : MonoBehaviour
         _index = Random.Range(0, positions.Count);
         _lastIndex = _index;
 
-        transform.position = positions[_index].position;
+        transform.localPosition = positions[_index].localPosition;
 
         StartCoroutine(MovementLoop());
     }
@@ -53,19 +53,19 @@ public class MovementHelper : MonoBehaviour
         {
             yield return new WaitForSeconds(_decisionOffset);
 
-            _startPosition = transform.position;
-            _targetPosition = positions[_index].position;
+            _startPosition = transform.localPosition;
+            _targetPosition = positions[_index].localPosition;
 
             float time = 0f;
 
             while (time < duration)
             {
-                transform.position = Vector3.Lerp(_startPosition, _targetPosition, time / duration);
+                transform.localPosition = Vector3.Lerp(_startPosition, _targetPosition, time / duration);
                 time += Time.deltaTime;
                 yield return null;
             }
 
-            transform.position = _targetPosition;
+            transform.localPosition = _targetPosition;
 
             ChooseNextIndex();
         }
