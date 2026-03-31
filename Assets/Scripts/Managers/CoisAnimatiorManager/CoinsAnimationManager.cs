@@ -19,14 +19,6 @@ public class CoinsAnimationManager : Singleton<CoinsAnimationManager>
         items = new List<ItemCollectableCoin>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            StartAnimations();
-        }
-    }
-
     public void RegisterCoin(ItemCollectableCoin item)
     {
         if (!items.Contains(item))

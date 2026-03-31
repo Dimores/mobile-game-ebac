@@ -67,7 +67,7 @@ public class ItemCollectableCoin : ItemCollectableBase
         base.OnCollect();
         coinCollider.enabled = false;
         collect = true;
-        //PlayerController.Instance.Bounce();
+        PlayerController.Instance.Bounce();
 
         //ItemManager.Instance.AddCoins();
         //VFXManager.Instance.PlayVFXByTypeWithCollision(VFXManager.VFXType.COIN, this.transform.position, 

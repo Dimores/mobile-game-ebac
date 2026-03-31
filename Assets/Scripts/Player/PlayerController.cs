@@ -28,6 +28,7 @@ public class PlayerController : Singleton<PlayerController>
 
     [Header("Animation")]
     public AnimatorManager animatorManager;
+    [SerializeField] private BounceHelper _bounceHelper;
 
     [Header("VFX")]
     public ParticleSystem heightVfx;
@@ -36,6 +37,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #region PRIVATES
     private bool _canRun;
+    private bool _isDead; // Nova flag para controlar o estado de morte
     private Vector3 _pos;
     private Vector3 _startPosition;
     private float _currentSpeed;
@@ -66,24 +68,28 @@ public class PlayerController : Singleton<PlayerController>
     public void StartGame()
     {
         _canRun = true;
+        _isDead = false; // Garante que o player não está morto ao começar
         animatorManager.Play(AnimatorManager.AnimatonType.RUN, _currentSpeed / _baseSpeedToAnimation);
     }
 
     private void EndGame(AnimatorManager.AnimatonType animatonType = AnimatorManager.AnimatonType.IDLE)
     {
         _canRun = false;
+        _isDead = true; // Avisa o sistema que o player morreu
         endScreen.SetActive(true);
         animatorManager.Play(animatonType);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (_isDead) return; // Se já estiver morto, ignora novas colisões
+
         if (collision.transform.tag == enemyTag)
         {
-            if (!_invencible) 
+            if (!_invencible)
             {
                 MoveBack(collision.transform);
-                EndGame(AnimatorManager.AnimatonType.DEAD); 
+                EndGame(AnimatorManager.AnimatonType.DEAD);
             }
         }
     }
@@ -95,11 +101,21 @@ public class PlayerController : Singleton<PlayerController>
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_isDead) return; // Se já estiver morto, ignora novos triggers
+
         if (other.transform.tag == endLineTag)
         {
             if (!_invencible) EndGame();
         }
     }
+
+    #region ANIMATION
+    public void Bounce()
+    {
+        if (_bounceHelper != null)
+            _bounceHelper.Bounce();
+    }
+    #endregion
 
     #region POWER UPS
     public void SetPowerUpText(string s)
