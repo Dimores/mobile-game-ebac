@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Orby.Core.Singleton
+namespace Ebac.Core.Singleton
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
@@ -17,3 +17,4 @@ namespace Orby.Core.Singleton
         }
     }
 }
+

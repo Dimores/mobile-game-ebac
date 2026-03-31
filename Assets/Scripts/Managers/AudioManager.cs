@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Orby.Core.Singleton;
 using UnityEngine;
 using UnityEngine.Audio;
-using static Orby.Managers.AudioManager;
+using Ebac.Core.Singleton;
 
 namespace Orby.Managers
 {

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Orby.Core.Singleton;
+using Ebac.Core.Singleton;
 using UnityEngine;
 
 namespace Orby.Managers

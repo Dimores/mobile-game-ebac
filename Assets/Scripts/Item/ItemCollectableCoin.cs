@@ -31,7 +31,7 @@ public class ItemCollectableCoin : ItemCollectableBase
 
     {
         //AnimateCoin(); 
-        //CoinsAnimationManager.Instance.RegisterCoin(this);
+        CoinsAnimationManager.Instance.RegisterCoin(this);
     }
 
     private void Update()

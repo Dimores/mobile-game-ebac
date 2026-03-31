@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Orby.Core.Singleton;
+using Ebac.Core.Singleton;
 //using DG.Tweening;
 //using Cinemachine;
 using System.Net;

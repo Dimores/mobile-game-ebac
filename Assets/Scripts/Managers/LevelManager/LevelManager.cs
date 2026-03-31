@@ -33,6 +33,13 @@ public class LevelManager : MonoBehaviour
         ResetLevel();
         CreateLevelPieces();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            CreateLevelPieces();
+        }
+    }
 
     private void SpawnNextLevel()
     {
@@ -44,7 +51,6 @@ public class LevelManager : MonoBehaviour
 
             CheckToResetLevel();
         }
-
         _currentLevel = Instantiate(levels[_index], container);
         _currentLevel.transform.localPosition = Vector3.zero;
     }
@@ -80,6 +86,8 @@ public class LevelManager : MonoBehaviour
 
             yield return new WaitForSeconds(scaleTimeBeetweenPieces);
         }
+
+        CoinsAnimationManager.Instance.StartAnimations();
     }
 
     private void CreateLevelPiece(List<LevelPieceBase> levelList)
@@ -108,6 +116,7 @@ public class LevelManager : MonoBehaviour
             Destroy(piece.gameObject);
         }
         _spawnedPieces.Clear();
+        CoinsAnimationManager.Instance.CleanCoins();
     }
 
     private void CreateLevelPieces()
@@ -146,11 +155,4 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(ScalePiecesByTime());
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            CreateLevelPieces();
-        }
-    }
 }
