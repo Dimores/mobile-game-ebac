@@ -421,10 +421,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PFB_PowerCoins
       objectReference: {fileID: 0}
-    - target: {fileID: 7720188172184870214, guid: b03fe607b5b23d347be09ed6a1623b3d, type: 3}
-      propertyPath: duration
-      value: 3.05
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

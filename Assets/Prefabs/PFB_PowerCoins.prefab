@@ -153,5 +153,5 @@ MonoBehaviour:
   sprite: {fileID: 2894946192832431060}
   compareTag: Player
   audioSource: {fileID: 0}
-  duration: 3
+  duration: 10
   sizeAmount: 10
