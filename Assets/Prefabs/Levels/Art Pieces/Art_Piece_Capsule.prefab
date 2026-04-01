@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1247318979702860297}
   - component: {fileID: 3306049513092765775}
   - component: {fileID: 9145609791182658704}
+  - component: {fileID: 5997328402246852826}
   m_Layer: 0
   m_Name: Art_Piece_Capsule
   m_TagString: Untagged
@@ -107,3 +108,17 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5997328402246852826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3407953198763708464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec8ae0b166982943bb9ae70802baac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  _meshRenderer: {fileID: 3306049513092765775}

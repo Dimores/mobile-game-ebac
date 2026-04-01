@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 4536832991641945328}
   - component: {fileID: 6213234315576286775}
   - component: {fileID: 5784283257614305477}
+  - component: {fileID: 3462300714448388072}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -154,6 +155,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &3462300714448388072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094524509580055866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec8ae0b166982943bb9ae70802baac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1
+  startColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7659432642762092208
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,8 +259,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 462464805255917234, guid: bafb1f7133747594e9a6ad3244d49c56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 448437952173691421}
   m_SourcePrefab: {fileID: 100100000, guid: bafb1f7133747594e9a6ad3244d49c56, type: 3}
+--- !u!1 &1527408033892923184 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 462464805255917234, guid: bafb1f7133747594e9a6ad3244d49c56, type: 3}
+  m_PrefabInstance: {fileID: 1394269572015970690}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &448437952173691421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527408033892923184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec8ae0b166982943bb9ae70802baac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1
+  startColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &5520111741398716217 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6900095893558351547, guid: bafb1f7133747594e9a6ad3244d49c56, type: 3}
