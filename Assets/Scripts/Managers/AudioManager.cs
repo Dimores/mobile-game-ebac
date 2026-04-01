@@ -10,42 +10,30 @@ namespace Orby.Managers
     {
         public enum AudioType
         {
-            SHOOT,
-            JUMP,
-            FALL,
-            DAMAGE,
-            SLIMEDAMAGE,
-            DASH,
-            MENUBUTTONHOVER,
-            FIREBALLATTACK,
-            FIREBALLEXPLOSION,
-            SHOOTERATTACK,
-            PORTALOPEN,
-            PORTALCLOSE,
-            LOADLASER,
-            SHOOTLASER
+            COINCOLLECT,
+            POWERUPCOIN
         }
 
         public List<AudioManagerSetup> audioSetup;
 
         #region METHODS
-        public void PlayMenuButtonHoverAudio(float volume)
-        {
-            AudioClip clip = GetAudioClip(AudioType.MENUBUTTONHOVER);
-            if (clip == null)
-            {
-                return;
-            }
+        //public void PlayMenuButtonHoverAudio(float volume)
+        //{
+        //    AudioClip clip = GetAudioClip(AudioType.MENUBUTTONHOVER);
+        //    if (clip == null)
+        //    {
+        //        return;
+        //    }
 
-            GameObject audioObj = new GameObject($"Audio_MENUBUTTONHOVER");
-            AudioSource audioSource = audioObj.AddComponent<AudioSource>();
-            audioSource.clip = clip;
-            audioSource.volume = volume;
+        //    GameObject audioObj = new GameObject($"Audio_MENUBUTTONHOVER");
+        //    AudioSource audioSource = audioObj.AddComponent<AudioSource>();
+        //    audioSource.clip = clip;
+        //    audioSource.volume = volume;
 
-            audioSource.Play();
+        //    audioSource.Play();
 
-            Destroy(audioObj, clip.length);
-        }
+        //    Destroy(audioObj, clip.length);
+        //}
 
         public void PlayAudioByType(AudioType audioType)
         {

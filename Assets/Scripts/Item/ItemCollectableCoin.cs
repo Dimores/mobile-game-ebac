@@ -1,3 +1,4 @@
+using Orby.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,6 +44,8 @@ public class ItemCollectableCoin : ItemCollectableBase
 
             if (Vector3.Distance(transform.position, PlayerController.Instance.transform.position) < minDistance)
             {
+                PlayerController.Instance.Bounce();
+
                 HideItens();
                 Destroy(gameObject);
             }
@@ -67,8 +70,8 @@ public class ItemCollectableCoin : ItemCollectableBase
         base.OnCollect();
         coinCollider.enabled = false;
         collect = true;
-        PlayerController.Instance.Bounce();
 
+        AudioManager.Instance.PlayAudioByTypeWithRandomPitch(AudioManager.AudioType.COINCOLLECT, new Vector2(0.95f, 1.05f), 0.3f);
         //ItemManager.Instance.AddCoins();
         //VFXManager.Instance.PlayVFXByTypeWithCollision(VFXManager.VFXType.COIN, this.transform.position, 
         //    null, vfxCollider);

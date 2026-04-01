@@ -6,20 +6,18 @@ using UnityEngine;
 public class BounceHelper : MonoBehaviour
 {
     [Header("Animation")]
-    public float scaleDuration = .2f;
+    public float scaleDuration = .2f; 
     public float scaleBounce = 1.2f;
     public Ease ease = Ease.OutBack;
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Bounce();
-        }
-    }
-
     public void Bounce()
     {
-        transform.DOScale(scaleBounce, scaleDuration).SetEase(ease).SetLoops(2, LoopType.Yoyo);
+        transform.DOKill();
+
+        transform.localScale = Vector3.one;
+
+        transform.DOScale(scaleBounce, scaleDuration)
+            .SetEase(ease)
+            .SetLoops(2, LoopType.Yoyo);
     }
 }

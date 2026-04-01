@@ -29,6 +29,7 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Animation")]
     public AnimatorManager animatorManager;
     [SerializeField] private BounceHelper _bounceHelper;
+    [SerializeField] private ScaleHelper _scaleHelper;
 
     [Header("VFX")]
     public ParticleSystem heightVfx;
@@ -49,8 +50,9 @@ public class PlayerController : Singleton<PlayerController>
     {
         _startPosition = transform.position;
         ResetSpeed();
-
         ChangeEmission(0);
+
+        _scaleHelper.Scale();
     }
 
     void Update()

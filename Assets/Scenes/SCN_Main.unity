@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 498961759}
   - component: {fileID: 498961758}
   - component: {fileID: 498961757}
+  - component: {fileID: 498961760}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -383,7 +384,7 @@ RectTransform:
   m_GameObject: {fileID: 498961755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1815901108}
@@ -500,6 +501,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 498961755}
   m_CullTransparentMesh: 1
+--- !u!114 &498961760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498961755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13511aa42107b0b44885eeffcf894fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 498961756}
+  scaleDuration: 1.5
+  finalScale: 1
+  ease: 27
 --- !u!1 &512621963
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,11 +963,62 @@ RectTransform:
   - {fileID: 498961756}
   m_Father: {fileID: 1336144129}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000030518, y: 0}
-  m_SizeDelta: {x: 810, y: 1440}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &824278104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824278105}
+  - component: {fileID: 824278106}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &824278105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824278104}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1762189886}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &824278106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824278104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92b3b9801e67a554e96ea94df3f356f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSetup:
+  - audioType: 0
+    audioClip: {fileID: 8300000, guid: 8d675fd2cfb9ef04d838fad1b724365a, type: 3}
+    outputGroup: {fileID: 2704354184697782242, guid: a6b29103ee190d14fba47c5abab534db, type: 2}
+  - audioType: 1
+    audioClip: {fileID: 8300000, guid: 628f29b4fcb25ec4ebf10dcb6d774a21, type: 3}
+    outputGroup: {fileID: 2704354184697782242, guid: a6b29103ee190d14fba47c5abab534db, type: 2}
 --- !u!1 &939821658
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,6 +1295,7 @@ GameObject:
   - component: {fileID: 1012708588}
   - component: {fileID: 1012708589}
   - component: {fileID: 1012708590}
+  - component: {fileID: 1012708591}
   m_Layer: 0
   m_Name: PlayerContainer
   m_TagString: Player
@@ -1372,6 +1441,7 @@ MonoBehaviour:
   coinCollector: {fileID: 2003309130}
   animatorManager: {fileID: 634365952}
   _bounceHelper: {fileID: 1012708590}
+  _scaleHelper: {fileID: 1012708591}
   heightVfx: {fileID: 1352727125}
   rateOverDistance: 6
 --- !u!114 &1012708590
@@ -1389,6 +1459,21 @@ MonoBehaviour:
   scaleDuration: 0.05
   scaleBounce: 1.2
   ease: 1
+--- !u!114 &1012708591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012708581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4027538ba35b3894481ccde707d71cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleDuration: 0.8
+  finalScale: 1
+  ease: 27
 --- !u!1 &1265485099
 GameObject:
   m_ObjectHideFlags: 0
@@ -2181,6 +2266,7 @@ Transform:
   - {fileID: 706285133}
   - {fileID: 203422015}
   - {fileID: 439337552}
+  - {fileID: 824278105}
   m_Father: {fileID: 1993638925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1815901107
