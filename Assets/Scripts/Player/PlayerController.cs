@@ -59,11 +59,12 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (!_canRun) return;
 
+        transform.Translate(transform.forward * _currentSpeed * Time.deltaTime);
+
         _pos = target.position;
         _pos.y = transform.position.y;
         _pos.z = transform.position.z;
 
-        transform.Translate(transform.forward * _currentSpeed * Time.deltaTime);
         transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
     }
 
