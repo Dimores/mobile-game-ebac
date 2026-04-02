@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//using DG.Tweening;
-//using Orby.Managers; // Importa o DOTween
-
 public class ItemCollectableCoin : ItemCollectableBase
 {
     [Header("Coin Specific Config")]
@@ -14,24 +11,8 @@ public class ItemCollectableCoin : ItemCollectableBase
     public float lerp = 5f;
     public float minDistance = 1f;
 
-    //[Header("Animation Config")]
-    //public float rotationSpeed = 1f; 
-    //public float floatHeight = 0.2f; 
-    //public float floatDuration = 1f;
-
-
-    //[Header("VFX Collider")]
-    //public Transform vfxCollider;
-
-
-    //private Tween _rotationTween;
-    //private Tween _floatTween;
-
-
     private void Start()
-
     {
-        //AnimateCoin(); 
         CoinsAnimationManager.Instance.RegisterCoin(this);
     }
 
@@ -46,6 +27,11 @@ public class ItemCollectableCoin : ItemCollectableBase
             {
                 PlayerController.Instance.Bounce();
 
+                // 1. CHAME O VFX AQUI! 
+                // Agora a moeda já está na posição do player. O VFX vai se desvincular (null) 
+                // na posição correta antes da moeda ser destruída.
+                base.OnCollect();
+
                 HideItens();
                 Destroy(gameObject);
             }
@@ -57,24 +43,14 @@ public class ItemCollectableCoin : ItemCollectableBase
         GetComponentInChildren<MeshRenderer>().enabled = false;
     }
 
-
-    private void AnimateCoin()
-    {
-        //_floatTween = transform.DOMoveY(transform.position.y + floatHeight, floatDuration)
-        //    .SetLoops(-1, LoopType.Yoyo) 
-        //    .SetEase(Ease.InOutSine); 
-    }
-
     protected override void OnCollect()
     {
-        base.OnCollect();
         coinCollider.enabled = false;
-        collect = true;
+        collect = true; // Inicia a viagem até o player
 
+        // Dica: Se esse áudio for o barulho de "moeda entrando no bolso", 
+        // talvez você queira movê-lo para o Update junto com o base.OnCollect()
         AudioManager.Instance.PlayAudioByTypeWithRandomPitch(AudioManager.AudioType.COINCOLLECT, new Vector2(0.95f, 1.05f), Random.Range(0.09f, 0.19f));
-        //ItemManager.Instance.AddCoins();
-        //VFXManager.Instance.PlayVFXByTypeWithCollision(VFXManager.VFXType.COIN, this.transform.position, 
-        //    null, vfxCollider);
     }
 
     protected override void Collect()

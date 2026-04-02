@@ -24,9 +24,13 @@ public class LevelManager : MonoBehaviour
     private List<LevelPieceBase> _spawnedPieces;
     private LevelPieceBasedSetup _currentLevelPieceSetup;
 
+    public List<ParticleSystem> _coinsVFX;
+    private ParticleSystem _currentCoinVFX;
+
     private void Awake()
     {
         _spawnedPieces = new List<LevelPieceBase>();
+        _coinsVFX = new List<ParticleSystem>();
     }
 
     private void Start()
@@ -67,6 +71,7 @@ public class LevelManager : MonoBehaviour
     private void ResetLevel()
     {
         _index = 0;
+        _coinsVFX.Clear();
     }
 
     IEnumerator ScalePiecesByTime()
@@ -158,6 +163,26 @@ public class LevelManager : MonoBehaviour
         ColorManager.Instance.ChangeColorByType(_currentLevelPieceSetup.artType);
 
         StartCoroutine(ScalePiecesByTime());
+
+        RegisterCoinsByPiece();
     }
 
+    private void RegisterCoinsByPiece()
+    {
+        _coinsVFX.Clear();
+
+        for (int i = 0; i < _spawnedPieces.Count; i++)
+        {
+            ParticleSystem[] moedasDaPeca = _spawnedPieces[i].GetComponentsInChildren<ParticleSystem>();
+
+            foreach (ParticleSystem moeda in moedasDaPeca)
+            {
+                _coinsVFX.Add(moeda);
+
+                var collisionModule = moeda.collision;
+
+                collisionModule.SetPlane(0, _spawnedPieces[i].collisionTransform);
+            }
+        }
+    }
 }

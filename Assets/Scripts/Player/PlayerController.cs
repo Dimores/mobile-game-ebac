@@ -34,11 +34,12 @@ public class PlayerController : Singleton<PlayerController>
     [Header("VFX")]
     public ParticleSystem heightVfx;
     public int rateOverDistance = 6;
+    public ParticleSystem deathVfx;
     #endregion
 
     #region PRIVATES
     private bool _canRun;
-    private bool _isDead; // Nova flag para controlar o estado de morte
+    private bool _isDead = false; 
     private Vector3 _pos;
     private Vector3 _startPosition;
     private float _currentSpeed;
@@ -81,6 +82,7 @@ public class PlayerController : Singleton<PlayerController>
         _isDead = true; // Avisa o sistema que o player morreu
         endScreen.SetActive(true);
         animatorManager.Play(animatonType);
+        if (deathVfx != null) deathVfx.Play();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -104,7 +106,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_isDead) return; // Se já estiver morto, ignora novos triggers
+        if (_isDead) return; 
 
         if (other.transform.tag == endLineTag)
         {

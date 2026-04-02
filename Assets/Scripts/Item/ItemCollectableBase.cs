@@ -13,6 +13,9 @@ public class ItemCollectableBase : MonoBehaviour
     [Header("Sounds")]
     public AudioSource audioSource;
 
+    [Header("VFX")]
+    public ParticleSystem collectVfx;
+
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.transform.CompareTag(compareTag))
@@ -36,6 +39,10 @@ public class ItemCollectableBase : MonoBehaviour
 
     protected virtual void OnCollect() {
         if (audioSource != null) audioSource.Play();
-        
+        if (collectVfx != null)
+        {
+            collectVfx.transform.SetParent(null);
+            collectVfx.Play();
+        }
     }
 }
