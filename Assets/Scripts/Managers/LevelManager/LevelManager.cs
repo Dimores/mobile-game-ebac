@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using DG.Tweening;
 using UnityEngine;
+using Orby.Managers;
 
 public class LevelManager : MonoBehaviour
 {
@@ -82,7 +83,11 @@ public class LevelManager : MonoBehaviour
             if (_spawnedPieces[i] == null) continue;
 
             _spawnedPieces[i].transform.DOScale(1, scaleDuration).SetEase(ease)
-                .SetLink(_spawnedPieces[i].gameObject);
+                .SetLink(_spawnedPieces[i].gameObject).OnComplete(() =>
+                {
+                    AudioManager.Instance.PlayAudioByTypeWithRandomPitch(
+                        AudioManager.AudioType.PIECEPLACE, new Vector2(0.8f, 1.2f), Random.Range(0.14f, 0.35f));
+                });
 
             yield return new WaitForSeconds(scaleTimeBeetweenPieces);
         }

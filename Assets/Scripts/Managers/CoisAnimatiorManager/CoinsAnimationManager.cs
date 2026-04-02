@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Ebac.Core.Singleton;
+using Orby.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,13 @@ public class CoinsAnimationManager : Singleton<CoinsAnimationManager>
             if (items[i] == null) continue;
 
             items[i].transform.DOScale(1, scaleDuration).SetEase(ease)
-                .SetLink(items[i].gameObject);
+                .SetLink(items[i].gameObject).OnComplete(() =>
+                {
+                    AudioManager.Instance.PlayAudioByTypeWithRandomPitch(
+                        AudioManager.AudioType.POP, new Vector2(0.8f, 1.05f),
+                        Random.Range(0.02f, 0.05f)
+                    );
+                });
 
             yield return new WaitForSeconds(scaleTimeBeetweenPieces);
         }

@@ -11,10 +11,66 @@ namespace Orby.Managers
         public enum AudioType
         {
             COINCOLLECT,
-            POWERUPCOIN
+            POWERUPCOIN,
+            PIECEPLACE,
+            POP
         }
 
         public List<AudioManagerSetup> audioSetup;
+
+        #region POOLING VARIABLES
+        [Header("Pooling Configuration")]
+        public int initialPoolSize = 100;
+        public int expansionSize = 10;
+        private List<AudioSource> audioPool = new List<AudioSource>();
+        #endregion
+
+        private void Start()
+        {
+            InitializePool();
+        }
+
+        #region POOLING METHODS
+        private void InitializePool()
+        {
+            ExpandPool(initialPoolSize);
+        }
+
+        private void ExpandPool(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                GameObject audioObj = new GameObject("PooledAudioSource");
+                audioObj.transform.SetParent(this.transform);
+                AudioSource audioSource = audioObj.AddComponent<AudioSource>();
+
+                audioObj.SetActive(false);
+                audioPool.Add(audioSource);
+            }
+        }
+
+        private AudioSource GetAudioSourceFromPool()
+        {
+            for (int i = 0; i < audioPool.Count; i++)
+            {
+                if (!audioPool[i].gameObject.activeInHierarchy)
+                {
+                    return audioPool[i];
+                }
+            }
+
+            int previousSize = audioPool.Count;
+            ExpandPool(expansionSize);
+
+            return audioPool[previousSize];
+        }
+
+        private IEnumerator DeactivateAudioAfterTime(GameObject audioObj, float time)
+        {
+            yield return new WaitForSeconds(time);
+            audioObj.SetActive(false);
+        }
+        #endregion
 
         #region METHODS
         //public void PlayMenuButtonHoverAudio(float volume)
@@ -37,80 +93,81 @@ namespace Orby.Managers
 
         public void PlayAudioByType(AudioType audioType)
         {
-            AudioClip clip = GetAudioClip(audioType);
-            if (clip == null)
-            {
-                return;
-            }
+            AudioManagerSetup setup = GetSetup(audioType);
+            if (setup == null || setup.audioClip == null) return;
 
-            GameObject audioObj = new GameObject($"Audio_{audioType}");
-            AudioSource audioSource = audioObj.AddComponent<AudioSource>();
-            audioSource.clip = clip;
+            AudioSource audioSource = GetAudioSourceFromPool();
+            audioSource.gameObject.name = $"Audio_{audioType}";
+            audioSource.clip = setup.audioClip;
+            audioSource.volume = 1f;
+            audioSource.pitch = 1f;
+            audioSource.outputAudioMixerGroup = setup.outputGroup;
 
+            audioSource.gameObject.SetActive(true);
             audioSource.Play();
 
-            Destroy(audioObj, clip.length);
+            StartCoroutine(DeactivateAudioAfterTime(audioSource.gameObject, setup.audioClip.length));
         }
 
         public void PlayAudioByType(AudioType audioType, float volume)
         {
-            AudioClip clip = GetAudioClip(audioType);
-            if (clip == null)
-            {
-                return;
-            }
+            AudioManagerSetup setup = GetSetup(audioType);
+            if (setup == null || setup.audioClip == null) return;
 
-            GameObject audioObj = new GameObject($"Audio_{audioType}");
-            AudioSource audioSource = audioObj.AddComponent<AudioSource>();
-            audioSource.clip = clip;
+            AudioSource audioSource = GetAudioSourceFromPool();
+            audioSource.gameObject.name = $"Audio_{audioType}";
+            audioSource.clip = setup.audioClip;
             audioSource.volume = volume;
+            audioSource.pitch = 1f;
+            audioSource.outputAudioMixerGroup = setup.outputGroup;
 
+            audioSource.gameObject.SetActive(true);
             audioSource.Play();
 
-            Destroy(audioObj, clip.length);
+            StartCoroutine(DeactivateAudioAfterTime(audioSource.gameObject, setup.audioClip.length));
         }
 
-        public void PlayAudioByTypeWithRandomPitch(AudioType audioType, Vector2 random,
-            float volume)
+        public void PlayAudioByTypeWithRandomPitch(AudioType audioType, Vector2 random, float volume)
         {
-            AudioClip clip = GetAudioClip(audioType);
-            if (clip == null)
+            AudioManagerSetup setup = GetSetup(audioType);
+            if (setup == null || setup.audioClip == null)
             {
                 Debug.LogWarning($"Áudio do tipo {audioType} não encontrado!");
                 return;
             }
 
-            GameObject audioObj = new GameObject($"Audio_{audioType}");
-            AudioSource audioSource = audioObj.AddComponent<AudioSource>();
-            audioSource.clip = clip;
+            AudioSource audioSource = GetAudioSourceFromPool();
+            audioSource.gameObject.name = $"Audio_{audioType}";
+            audioSource.clip = setup.audioClip;
             audioSource.volume = Mathf.Clamp(volume, 0f, 1f);
+            audioSource.outputAudioMixerGroup = setup.outputGroup;
 
             if (random.x > random.y)
             {
-                (random.x, random.y) = (random.y, random.x); 
+                (random.x, random.y) = (random.y, random.x);
             }
 
             audioSource.pitch = Random.Range(random.x, random.y);
 
+            audioSource.gameObject.SetActive(true);
             audioSource.Play();
 
-            Destroy(audioObj, clip.length / audioSource.pitch); 
+            StartCoroutine(DeactivateAudioAfterTime(audioSource.gameObject, setup.audioClip.length / audioSource.pitch));
         }
 
-
-        private AudioClip GetAudioClip(AudioType audioType)
+        private AudioManagerSetup GetSetup(AudioType audioType)
         {
-            foreach (var setup in audioSetup)
+            if (audioSetup == null) return null;
+
+            foreach (AudioManagerSetup configItem in audioSetup)
             {
-                if (setup.audioType == audioType)
-                    return setup.audioClip;
+                if (configItem.audioType == audioType)
+                    return configItem;
             }
-            return null; 
+
+            return null;
         }
-
         #endregion
-
-
     }
 
     [System.Serializable]
@@ -118,6 +175,6 @@ namespace Orby.Managers
     {
         public AudioManager.AudioType audioType;
         public AudioClip audioClip;
-        public AudioMixerGroup outputGroup; 
+        public AudioMixerGroup outputGroup;
     }
 }
