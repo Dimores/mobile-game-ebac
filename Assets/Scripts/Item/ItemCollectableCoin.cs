@@ -71,7 +71,7 @@ public class ItemCollectableCoin : ItemCollectableBase
         coinCollider.enabled = false;
         collect = true;
 
-        AudioManager.Instance.PlayAudioByTypeWithRandomPitch(AudioManager.AudioType.COINCOLLECT, new Vector2(0.95f, 1.05f), 0.3f);
+        AudioManager.Instance.PlayAudioByTypeWithRandomPitch(AudioManager.AudioType.COINCOLLECT, new Vector2(0.95f, 1.05f), Random.Range(0.09f, 0.19f));
         //ItemManager.Instance.AddCoins();
         //VFXManager.Instance.PlayVFXByTypeWithCollision(VFXManager.VFXType.COIN, this.transform.position, 
         //    null, vfxCollider);
