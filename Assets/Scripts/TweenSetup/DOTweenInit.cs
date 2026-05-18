@@ -5,6 +5,6 @@ public class DOTweenInit : MonoBehaviour
 {
     void Awake()
     {
-        DOTween.SetTweensCapacity(500, 50);
+        DOTween.SetTweensCapacity(1250, 50);
     }
 }

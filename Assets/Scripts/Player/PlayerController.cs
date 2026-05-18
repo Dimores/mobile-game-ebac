@@ -35,6 +35,9 @@ public class PlayerController : Singleton<PlayerController>
     public ParticleSystem heightVfx;
     public int rateOverDistance = 6;
     public ParticleSystem deathVfx;
+
+    [Header("Limits")]
+    public float limit = 4f;
     #endregion
 
     #region PRIVATES
@@ -61,6 +64,10 @@ public class PlayerController : Singleton<PlayerController>
         if (!_canRun) return;
 
         transform.Translate(transform.forward * _currentSpeed * Time.deltaTime);
+
+        Vector3 clampedTargetPos = target.position;
+        clampedTargetPos.x = Mathf.Clamp(clampedTargetPos.x, -limit, limit);
+        target.position = clampedTargetPos; 
 
         _pos = target.position;
         _pos.y = transform.position.y;
